@@ -1,1 +1,28 @@
 /* CSS declarations go here */
+input {
+  box-sizing: border-box;
+  padding: 10px 5px;
+  background: transparent;
+  border: 1px solid #eee;
+  font-size: 1em;
+}
+
+li{
+  position: relative;
+  padding: 10px;
+  color:  #000;
+}
+.padT{
+  padding:5px;
+}
+button{
+  margin: 5px;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 11px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
