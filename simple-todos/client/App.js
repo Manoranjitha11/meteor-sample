@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-
-export default class App extends Component{
+import { withTracker } from 'meteor/react-meteor-data';
+import {Tasks} from '../db/mongo.js';
+class App extends Component{
   constructor(){
     super();
     this.state = {
-      getTasks : [
-        { _id: 1, text: 'task 1' },
-        { _id: 2, text: 'task 2' },
-        { _id: 3, text: 'task 3' },
-      ]
+      // getTasks :this.props.tasks
     }
   }
   // getTasks() {
@@ -19,20 +16,24 @@ export default class App extends Component{
   //   ];
   // }
   renderTasks() {
-    return this.state.getTasks.map((task) => (
+    return this.props.tasks.map((task) => (
       <li onDoubleClick={() => this.remove(task._id)} key={task._id}>{task.text}</li>
     ));
   }
   addlist(){
     let taskValue = document.getElementById("taskname").value;
-    var newObj = {_id : Math.random() , text : taskValue};
-    this.state.getTasks.push(newObj);
-    this.setState({getTasks : this.state.getTasks })
+    // var newObj = {_id : Math.random() , text : taskValue};
+    Tasks.insert({
+      text:taskValue,
+      createdAt: new Date() // current time
+    });
+    // this.setState({getTasks : this.state.getTasks })
     document.getElementById("taskname").value = "";
   }
   remove(id){
-      let filterArr = this.state.getTasks.filter((item) => item._id != id);
-      this.setState({getTasks : filterArr })
+    Tasks.remove(id);
+      // let filterArr = this.state.getTasks.filter((item) => item._id != id);
+      // this.setState({getTasks : filterArr })
   }
   render(){
     return(
@@ -49,3 +50,8 @@ export default class App extends Component{
     )
   }
 }
+export default withTracker(() => {
+  return {
+    tasks: Tasks.find({}).fetch(),
+  };
+})(App);
